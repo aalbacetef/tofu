@@ -42,7 +42,7 @@ func NewFileStore(fpath string) (*FileStore, error) {
 // to be concurrency-safe but none of the private methods should
 // be assumed to be concurrency-safe as they may not be.
 //
-// @NOTE: consider if embedding the InMemoryStore and sharing the mutex.
+// @TODO: the mutex should be used in a better fashion and named better (fileMutex?)
 type FileStore struct {
 	inmem       *InMemoryStore
 	lastUpdated time.Time
