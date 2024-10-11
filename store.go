@@ -1,38 +1,14 @@
 package tofu
 
 import (
-	"crypto/md5"
-	"crypto/x509"
 	"errors"
 	"fmt"
-	"strings"
 )
 
 type Host struct {
 	Address     string
 	Fingerprint string
 	Comment     string
-}
-
-func hashFunc(data []byte) string {
-	hash := md5.Sum(data)
-
-	return string(hash[:])
-}
-
-// Fingerprint returns the md5 hash of the DER encoded bytes.
-func Fingerprint(cert *x509.Certificate) string {
-	hash := hashFunc(cert.Raw)
-	n := len(hash)
-	bdr := &strings.Builder{}
-
-	for _, h := range hash[:n-1] {
-		fmt.Fprintf(bdr, "%02X:", h)
-	}
-
-	fmt.Fprintf(bdr, "%02X", hash[n-1])
-
-	return bdr.String()
 }
 
 var (
@@ -42,16 +18,15 @@ var (
 
 type Store interface {
 	// Add will add a host. If it is already known, it is
-	// expected implementations will return a ErrHostAlreadyExists.
+	// expected implementations will return ErrHostAlreadyExists.
 	Add(h Host) error
 
-	// Delete will delete the host if it found, otherwise
-	// it is expected implementations will return a ErrHostNotFound.
+	// Delete will delete the host if it is found, otherwise
+	// it is expected implementations will return ErrHostNotFound.
 	Delete(address string) error
 
 	// Lookup will check if a host is present otherwise it
-	// is expected that implementations will return an
-	// ErrHostNotFound.
+	// is expected that implementations will return ErrHostNotFound.
 	Lookup(address string) (Host, error)
 }
 
