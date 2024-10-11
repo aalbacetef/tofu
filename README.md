@@ -16,6 +16,7 @@ choose however they want to handle known hosts.
 There are two implementations, a `FileStore` and a `InMemoryStore`.  
 When using `FileStore`, the implementation assumes a format similar to the 
 `known_hosts` file used by SSH, that is, each line is a comma-separated set of values:
+
     - hash(address)
     - fingerprint - hash(data)
     - comment (optional)
