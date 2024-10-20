@@ -8,3 +8,5 @@ test: fmt
 
 fmt:
 	goimports -w .
+
+.PHONY: test fmt lint 
