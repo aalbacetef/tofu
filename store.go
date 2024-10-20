@@ -52,7 +52,7 @@ func Verify(store Store, host Host) (bool, error) {
 	return host.Fingerprint == storedHost.Fingerprint, nil
 }
 
-// Update will update use the Store's methods to update
+// Update will use the Store's methods to update
 // a given host. It deletes the old host, then adds the new
 // one.
 func Update(store Store, h Host) error {

@@ -42,7 +42,7 @@ func NewFileStore(fpath string) (*FileStore, error) {
 // to be concurrency-safe but none of the private methods should
 // be assumed to be concurrency-safe as they may not be.
 //
-// @TODO: the mutex should be used in a better fashion and named better (fileMutex?)
+// @TODO: the mutex should be used and named better (fileMutex?).
 type FileStore struct {
 	inmem       *InMemoryStore
 	lastUpdated time.Time
@@ -50,8 +50,8 @@ type FileStore struct {
 	mu          sync.Mutex
 }
 
-func (store *FileStore) getLastUpdated() (time.Time, error) {
-	stat, err := os.Stat(store.fpath)
+func getLastUpdated(fpath string) (time.Time, error) {
+	stat, err := os.Stat(fpath)
 	if err != nil {
 		return time.Time{}, fmt.Errorf("could not stat file: %w", err)
 	}
@@ -60,7 +60,7 @@ func (store *FileStore) getLastUpdated() (time.Time, error) {
 }
 
 func (store *FileStore) stale() (bool, error) {
-	lastModTime, err := store.getLastUpdated()
+	lastModTime, err := getLastUpdated(store.fpath)
 
 	return lastModTime.After(store.lastUpdated), err
 }
