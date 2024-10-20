@@ -38,31 +38,31 @@ var (
 
 func verifyConn(store tofu.Store) verifyFunc {
 	return func(state tls.ConnectionState) error {
-	    // check for peer certificates
-		peerCerts := state.PeerCertificates
-		if len(peerCerts) == 0 {
-			return ErrNoPeerCerts
+        // check for peer certificates
+        peerCerts := state.PeerCertificates
+        if len(peerCerts) == 0 {
+            return ErrNoPeerCerts
 		}
 
-		leaf := state.PeerCertificates[0]
+        leaf := state.PeerCertificates[0]
 
         // get fingerprint
-		host := tofu.Host{
-			Address:     state.ServerName,
-			Fingerprint: tofu.Fingerprint(leaf),
-		}
+        host := tofu.Host{
+            Address:     state.ServerName,
+            Fingerprint: tofu.Fingerprint(leaf),
+        }
 
         // verify host with fingerprint
-		valid, err := tofu.Verify(store, host)
-		if err != nil {
-			return fmt.Errorf("error verifying: %w", err)
-		}
+        valid, err := tofu.Verify(store, host)
+        if err != nil {
+            return fmt.Errorf("error verifying: %w", err)
+        }
 
-		if !valid {
-			return ErrInvalidCert
-		}
+        if !valid {
+            return ErrInvalidCert
+        }
 
-		return nil
+        return nil
 	}
 }
 ```
