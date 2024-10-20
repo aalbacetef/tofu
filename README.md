@@ -42,7 +42,7 @@ func verifyConn(store tofu.Store) verifyFunc {
         peerCerts := state.PeerCertificates
         if len(peerCerts) == 0 {
             return ErrNoPeerCerts
-		}
+        }
 
         leaf := state.PeerCertificates[0]
 
