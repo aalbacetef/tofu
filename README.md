@@ -15,12 +15,12 @@ To read more about it, check out the following links:
 
 ## Usage 
 
-The package provides an interface, `Store`, to allow the library consumer to 
-choose however they want to handle known hosts. 
+`tofu` provides an interface, `Store`, to allow the library consumer to 
+choose how they want to manage their known hosts. 
 
-There are two implementations, a `FileStore` and a `InMemoryStore`.  
+There are two implementations, a `FileStore` and an `InMemoryStore`.  
 When using `FileStore`, the implementation assumes a format similar to the 
-`known_hosts` file used by SSH, that is, each line is a comma-separated set of values:
+`known_hosts` file used by SSH, each line is a comma-separated set of values:
 
 - hash(address)
 - fingerprint - hash(data)
@@ -28,7 +28,7 @@ When using `FileStore`, the implementation assumes a format similar to the
 
 ### Example 
 
-Specify a verification connection.
+Define a connection verification function.
 
 ```go
 var (
@@ -38,6 +38,7 @@ var (
 
 func verifyConn(store tofu.Store) verifyFunc {
 	return func(state tls.ConnectionState) error {
+	    // check for peer certificates
 		peerCerts := state.PeerCertificates
 		if len(peerCerts) == 0 {
 			return ErrNoPeerCerts
@@ -45,11 +46,13 @@ func verifyConn(store tofu.Store) verifyFunc {
 
 		leaf := state.PeerCertificates[0]
 
+        // get fingerprint
 		host := tofu.Host{
 			Address:     state.ServerName,
 			Fingerprint: tofu.Fingerprint(leaf),
 		}
 
+        // verify host with fingerprint
 		valid, err := tofu.Verify(store, host)
 		if err != nil {
 			return fmt.Errorf("error verifying: %w", err)
@@ -67,11 +70,11 @@ func verifyConn(store tofu.Store) verifyFunc {
 Pass it into a `tls.Config` 
 
 ```go
+const minTLSVersion = tls.VersionTLS12
 
-tlsConfig := &tls.Config{
+config := &tls.Config{
 	MinVersion:         minTLSVersion,
 	InsecureSkipVerify: true,
 	VerifyConnection:   verifyConn(myCertStore),
 }
-
 ```
