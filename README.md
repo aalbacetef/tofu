@@ -37,7 +37,7 @@ var (
 )
 
 func verifyConn(store tofu.Store) verifyFunc {
-	return func(state tls.ConnectionState) error {
+    return func(state tls.ConnectionState) error {
         // check for peer certificates
         peerCerts := state.PeerCertificates
         if len(peerCerts) == 0 {
@@ -63,7 +63,7 @@ func verifyConn(store tofu.Store) verifyFunc {
         }
 
         return nil
-	}
+    }
 }
 ```
 
