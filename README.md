@@ -1,5 +1,5 @@
 
-![CI status](https://github.com/aalbacetef/tofu/actions/workflows/ci.yml/badge.svg)   [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) 
+![CI status](https://github.com/aalbacetef/tofu/actions/workflows/ci.yml/badge.svg)   [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) [![Go Report Card](https://goreportcard.com/badge/github.com/aalbacetef/tofu)](https://goreportcard.com/github.com/aalbacetef/tofu)
 
 
 # tofu
